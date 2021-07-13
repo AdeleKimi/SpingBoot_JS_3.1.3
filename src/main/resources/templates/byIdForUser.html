@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <title>User by Id</title>
+</head>
+<body>
+
+
+
+<p th:text="${user.getName()}">VALUE</p>
+<p th:text="${user.getId()}">VALUE</p>
+<p th:text="${user.getPassword()}">VALUE</p>
+<!--<p th:text="${role.getName()}">VALUE</p>-->
+
+<form th:action="@{/logout}" method="post">
+  <button type="submit">Sign Out</button>
+</form>
+
+
+
+
+</body>
+</html>
