@@ -1,8 +1,12 @@
 package ru.mikhailkuleshov.springboot.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -16,7 +20,8 @@ public class User implements UserDetails {
     private long id;
     private String name;
     private String password;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -87,6 +92,7 @@ public class User implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
+    @Override
     public String toString(){
         return getUsername() + "\n" +
                 getId() + "\n" +

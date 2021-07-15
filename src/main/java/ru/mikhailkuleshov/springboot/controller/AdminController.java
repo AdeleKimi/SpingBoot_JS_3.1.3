@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.mikhailkuleshov.springboot.model.Role;
 import ru.mikhailkuleshov.springboot.model.User;
 
 import ru.mikhailkuleshov.springboot.service.MyUserService;
@@ -16,17 +17,16 @@ import ru.mikhailkuleshov.springboot.service.MyUserService;
 
 @Controller
 @RequestMapping("/admin")
+
 public class AdminController {
 
     private final MyUserService myUserService;
 
 
-    PasswordEncoder passwordEncoder;
-
     @Autowired
-    public AdminController(MyUserService myUserService, PasswordEncoder passwordEncoder) {
+    public AdminController(MyUserService myUserService) {
         this.myUserService = myUserService;
-        this.passwordEncoder = passwordEncoder;
+
 
     }
 
@@ -42,7 +42,8 @@ public class AdminController {
     }
 
     @GetMapping("/{id}")
-    public String getUserById(@PathVariable("id") long id, Model model) {
+    public String getUserById(@PathVariable("id") long id,
+                              Model model) {
         model.addAttribute("user", myUserService.findUserById(id));
 
 
@@ -55,9 +56,6 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "/new";
         }
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        myUserService.addRole(user, myUserService.findRoleById(1L));
 
 
         myUserService.saveUser(user);
@@ -76,8 +74,7 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "/edit";
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        myUserService.addRole(user, myUserService.findRoleById(1L));
+
         myUserService.updateUser(id, user);
         return "redirect:/admin";
     }
@@ -88,20 +85,6 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-//    @PostMapping("/{id}")
-//    public String deleteUser(@PathVariable("id") Long userId) {
-//
-//            myUserService.deleteUser(userId);
-//
-//        return "redirect:/admin";
-//
-//    }
 
-
-        @GetMapping("/roles")
-        public String getRoles (@ModelAttribute("user") User user){
-            return user.getRoles().toString();
-        }
-
-    }
+}
 

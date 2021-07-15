@@ -18,7 +18,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mikhailkuleshov.springboot.config.handler.LoginSuccessHandler;
+import ru.mikhailkuleshov.springboot.security.UserDetailsServiceImpl;
 import ru.mikhailkuleshov.springboot.service.MyUserService;
 
 
@@ -27,12 +29,12 @@ import ru.mikhailkuleshov.springboot.service.MyUserService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-    MyUserService userService;
+    UserDetailsServiceImpl userService;
 
 
     LoginSuccessHandler loginSuccessHandler;
     @Autowired
-    public SecurityConfig( MyUserService userService, LoginSuccessHandler loginSuccessHandler) {
+    public SecurityConfig( UserDetailsServiceImpl userService, LoginSuccessHandler loginSuccessHandler) {
         this.userService = userService;
         this.loginSuccessHandler = loginSuccessHandler;
     }
@@ -42,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Override
+
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().withUser("ADMINIS").password(passwordEncoder().encode("ADMINIS")).roles("ADMIN");
 

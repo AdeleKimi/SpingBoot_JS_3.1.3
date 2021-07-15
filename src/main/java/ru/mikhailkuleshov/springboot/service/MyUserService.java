@@ -1,13 +1,8 @@
 package ru.mikhailkuleshov.springboot.service;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,20 +11,12 @@ import ru.mikhailkuleshov.springboot.model.User;
 import ru.mikhailkuleshov.springboot.repository.RoleRepository;
 import ru.mikhailkuleshov.springboot.repository.UserRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Service
 @Transactional
-public class MyUserService implements UserDetailsService {
-
-    @PersistenceContext
-    private EntityManager entityManager;
+public class MyUserService {
 
     final
     UserRepository userRepository;
@@ -37,21 +24,19 @@ public class MyUserService implements UserDetailsService {
     final
     RoleRepository roleRepository;
 
+    final
+    PasswordEncoder passwordEncoder;
 
 
-    public MyUserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public MyUserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+    public User loadUserByUsername(String name) {
         User user = userRepository.findByName(name);
-
-
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
 
         return user;
     }
@@ -71,6 +56,9 @@ public class MyUserService implements UserDetailsService {
         if (userFromDB != null) {
             return false;
         }
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        addRole(user, findRoleByName("ROLE_USER"));
 
         userRepository.save(user);
         return true;
@@ -96,19 +84,23 @@ public class MyUserService implements UserDetailsService {
         user.setRoles(roleSet);
     }
 
+
     public Role findRoleById(Long id) {
-        TypedQuery<Role> query = entityManager.createQuery(
-                "select role  from Role role where role.id = :id", Role.class);
-        query.setParameter("id", id);
-        return query.getSingleResult();
+        Optional<Role> roleFromDb = roleRepository.findById(id);
+        return roleFromDb.orElse(new Role());
     }
 
     public void updateUser(Long id, User newUser) {
-        entityManager.merge(newUser);
+        saveUser(newUser);
+
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
+    public Role findRoleByName(String name) {
+        Role role = roleRepository.findRoleByName(name);
+        return role;
     }
+
+
+
 
 }

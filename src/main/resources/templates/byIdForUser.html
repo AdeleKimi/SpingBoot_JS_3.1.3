@@ -11,7 +11,8 @@
 <p th:text="${user.getName()}">VALUE</p>
 <p th:text="${user.getId()}">VALUE</p>
 <p th:text="${user.getPassword()}">VALUE</p>
-<!--<p th:text="${role.getName()}">VALUE</p>-->
+<p th:text="${user.getRoles().toString()}">VALUE</p>
+
 
 <form th:action="@{/logout}" method="post">
   <button type="submit">Sign Out</button>
