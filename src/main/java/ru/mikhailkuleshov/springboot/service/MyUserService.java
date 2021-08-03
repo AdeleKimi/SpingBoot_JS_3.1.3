@@ -16,16 +16,13 @@ import java.util.*;
 
 @Service
 @Transactional
-public class MyUserService {
+public class MyUserService implements UserService {
 
-    final
-    UserRepository userRepository;
+    final UserRepository userRepository;
 
-    final
-    RoleRepository roleRepository;
+    final RoleRepository roleRepository;
 
-    final
-    PasswordEncoder passwordEncoder;
+    final PasswordEncoder passwordEncoder;
 
 
     public MyUserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
@@ -35,8 +32,8 @@ public class MyUserService {
     }
 
 
-    public User loadUserByUsername(String name) {
-        User user = userRepository.findByName(name);
+    public User loadUserByFirstName(String name) {
+        User user = userRepository.findByFirstName(name);
 
         return user;
     }
@@ -46,19 +43,23 @@ public class MyUserService {
         return userFromDb.orElse(new User());
     }
 
+    public List<Role> allRoles() {
+        return roleRepository.findAll();
+    }
+
     public List<User> allUsers() {
         return userRepository.findAll();
     }
 
     public boolean saveUser(User user) {
-        User userFromDB = userRepository.findByName(user.getUsername());
+        User userFromDB = userRepository.findByFirstName(user.getEmail());
 
         if (userFromDB != null) {
             return false;
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        addRole(user, findRoleByName("ROLE_USER"));
+//        addRole(user, findRoleByName("ROLE_ADMIN"));
 
         userRepository.save(user);
         return true;

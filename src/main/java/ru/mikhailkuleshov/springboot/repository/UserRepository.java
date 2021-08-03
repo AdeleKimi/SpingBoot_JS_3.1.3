@@ -7,5 +7,5 @@ import ru.mikhailkuleshov.springboot.model.User;
 
 
 public interface UserRepository extends JpaRepository<User,Long> {
-    User findByName(String name);
+    User findByFirstName(String name);
 }

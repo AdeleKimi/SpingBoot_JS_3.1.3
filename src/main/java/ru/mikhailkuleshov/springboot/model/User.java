@@ -2,15 +2,14 @@ package ru.mikhailkuleshov.springboot.model;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.Collection;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "users")
@@ -18,7 +17,11 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String name;
+    private int age;
+    @Email
+    private String email;
+    private String firstName;
+    private String secondName;
     private String password;
     @Fetch(FetchMode.JOIN)
     @ManyToMany(fetch = FetchType.LAZY)
@@ -39,12 +42,12 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public Set<Role> getRoles() {
@@ -53,6 +56,30 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
@@ -66,7 +93,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return firstName;
     }
 
     @Override
@@ -94,10 +121,12 @@ public class User implements UserDetails {
     }
     @Override
     public String toString(){
+
+        String allRole = getRoles().toString().replaceAll("ROLE_","");
         return getUsername() + "\n" +
                 getId() + "\n" +
                 getPassword() + "\n" +
-                getRoles().toString();
+                allRole;
 
     }
 }

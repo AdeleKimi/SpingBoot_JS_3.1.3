@@ -66,7 +66,15 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String toString(){
-        return getName();
+//        String smallName = getName();
+//        if (smallName.equals("ROLE_ADMIN")){
+//            return "Admin";
+//        } else if (smallName.equals("ROLE_USER")){
+//            return "User";
+//        }
+
+        String smallName = getName().replaceAll("ROLE_","");
+        return smallName;
     }
 
 

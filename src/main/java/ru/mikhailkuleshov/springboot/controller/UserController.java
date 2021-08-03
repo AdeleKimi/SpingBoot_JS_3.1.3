@@ -30,7 +30,7 @@ public class UserController {
 
     @GetMapping()
     public String getUser(Principal principal, Model model) {
-        User user = (User) userService.loadUserByUsername(principal.getName());
+        User user = (User) userService.loadUserByFirstName(principal.getName());
 
         model.addAttribute("user", user);
 

@@ -2,10 +2,7 @@ package ru.mikhailkuleshov.springboot.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +10,12 @@ import ru.mikhailkuleshov.springboot.model.Role;
 import ru.mikhailkuleshov.springboot.model.User;
 
 import ru.mikhailkuleshov.springboot.service.MyUserService;
+import ru.mikhailkuleshov.springboot.service.UserService;
+
+import java.security.Principal;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -20,68 +23,88 @@ import ru.mikhailkuleshov.springboot.service.MyUserService;
 
 public class AdminController {
 
-    private final MyUserService myUserService;
+    private final UserService userService;
 
 
     @Autowired
     public AdminController(MyUserService myUserService) {
-        this.myUserService = myUserService;
+        this.userService = myUserService;
 
 
     }
 
     @GetMapping()
-    public String allUsers(Model model) {
-        model.addAttribute("users", myUserService.allUsers());
+    public String allUsers(Principal principal, Model model) {
+        User user = (User) userService.loadUserByFirstName(principal.getName());
+        model.addAttribute("users", userService.allUsers());
+        model.addAttribute("user",user);
         return "/AllUsers";
     }
 
     @GetMapping("/new")
-    public String newUser(@ModelAttribute("user") User user) {
+    public String newUser(@ModelAttribute("newUser") User user,
+                          @ModelAttribute("role") Role role,
+                          Principal principal,
+                          Model model) {
+        User myUser = (User) userService.loadUserByFirstName(principal.getName());
+        model.addAttribute("user",myUser);
+        model.addAttribute("roles", userService.allRoles());
+
         return "/new";
     }
 
     @GetMapping("/{id}")
     public String getUserById(@PathVariable("id") long id,
                               Model model) {
-        model.addAttribute("user", myUserService.findUserById(id));
+        model.addAttribute("user", userService.findUserById(id));
 
 
         return "/byId";
     }
 
     @PostMapping()
-    public String createUser(@ModelAttribute("user") User user,
+    public String createUser(@ModelAttribute("newUser") User user,
+                             @RequestParam("newroles") String[] role,
                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "/new";
         }
+        Set<Role> set =  Arrays.stream(role).
+                map(userService:: findRoleByName).
+                collect(Collectors.toSet());
+        user.setRoles(set);
+        userService.saveUser(user);
 
-
-        myUserService.saveUser(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/{id}/edit")
     public String editUser(Model model, @PathVariable("id") long id) {
-        model.addAttribute("user", myUserService.findUserById(id));
+        model.addAttribute("user", userService.findUserById(id));
         return "/edit";
     }
 
     @PatchMapping("/{id}")
-    public String updateUser(@ModelAttribute("user") User user, BindingResult bindingResult,
+    public String updateUser(@ModelAttribute("user") User user,
+                             @RequestParam("newroles") String[] role,
+                             BindingResult bindingResult,
                              @PathVariable("id") long id) {
         if (bindingResult.hasErrors()) {
             return "/edit";
         }
 
-        myUserService.updateUser(id, user);
+        Set<Role> set =  Arrays.stream(role).
+                map(userService:: findRoleByName).
+                collect(Collectors.toSet());
+        user.setRoles(set);
+
+        userService.updateUser(id, user);
         return "redirect:/admin";
     }
 
     @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable("id") long id) {
-        myUserService.deleteUser(id);
+        userService.deleteUser(id);
         return "redirect:/admin";
     }
 

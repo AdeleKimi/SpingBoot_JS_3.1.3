@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
 
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("ADMINIS").password(passwordEncoder().encode("ADMINIS")).roles("ADMIN");
+//        auth.inMemoryAuthentication().withUser("ADMINIS").password(passwordEncoder().encode("ADMINIS")).roles("ADMIN");
 
        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
 
@@ -62,8 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // указываем action с формы логина
                 .loginProcessingUrl("/login")
                 // Указываем параметры логина и пароля с формы логина
-                .usernameParameter("j_username")
-                .passwordParameter("j_password")
+                .usernameParameter("username")
+                .passwordParameter("password")
                 // даем доступ к форме логина всем
                 .permitAll();
 
