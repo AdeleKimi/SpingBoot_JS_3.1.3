@@ -18,11 +18,11 @@ import java.util.*;
 @Transactional
 public class MyUserService implements UserService {
 
-    final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    final RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
 
     public MyUserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
