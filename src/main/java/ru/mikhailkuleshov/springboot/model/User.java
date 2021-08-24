@@ -1,5 +1,6 @@
 package ru.mikhailkuleshov.springboot.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +14,7 @@ import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "users")
+
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +25,7 @@ public class User implements UserDetails {
     private String firstName;
     private String secondName;
     private String password;
+
     @Fetch(FetchMode.JOIN)
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",

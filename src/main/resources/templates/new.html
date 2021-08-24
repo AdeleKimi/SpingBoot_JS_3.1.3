@@ -55,8 +55,8 @@
 
 
             <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin">All users</a>
+                <li class="nav-item" >
+                    <a class="nav-link" id="allUserPage" href="/admin">All users</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/admin/new">New user</a>
@@ -71,68 +71,56 @@
             <div class="row justify-content-center">
                 <div class="col-3">
 
-                    <form th:method="POST" th:action="@{/admin}">
+
                         <div class="mb-3" style="text-align: center;">
-                            <label for="firstName" class="form-label"><b>First name</b></label>
-                            <input type="text" class="form-control" th:value="${newUser.firstName}" id="firstName"
-                                   name="firstName">
+                            <label for="newfirstName" class="form-label"><b>First name</b></label>
+                            <input type="text" class="form-control"  id="newfirstName"
+                                   name="newfirstName">
                         </div>
 
                         <div class="mb-3" style="text-align: center;">
-                            <label for="secondName" class="form-label"><b>Last name</b></label>
-                            <input type="text" class="form-control" th:value="${newUser.secondName}" id="secondName"
-                                   name="secondName">
+                            <label for="newsecondName" class="form-label"><b>Last name</b></label>
+                            <input type="text" class="form-control"  id="newsecondName"
+                                   name="newsecondName">
                         </div>
 
                         <div class="mb-3" style="text-align: center;">
-                            <label for="Age" class="form-label"><b>Age</b></label>
-                            <input type="text" class="form-control" th:value="${newUser.age}" id="Age"
-                                   name="Age">
+                            <label for="newAge" class="form-label"><b>Age</b></label>
+                            <input type="text" class="form-control"  id="newAge"
+                                   name="newAge">
                         </div>
 
                         <div class="mb-3" style="text-align: center;">
-                            <label for="Email" class="form-label"><b>Email</b></label>
-                            <input type="text" class="form-control" th:value="${newUser.email}" id="Email"
-                                   name="Email">
+                            <label for="newEmail" class="form-label"><b>Email</b></label>
+                            <input type="text" class="form-control"  id="newEmail"
+                                   name="newEmail">
                         </div>
 
                         <div class="mb-3" style="text-align: center;">
-                            <label for="password" class="form-label"><b>Password</b></label>
-                            <input type="password" class="form-control" th:value="${newUser.password}" id="password"
-                                   name="password">
+                            <label for="newpassword" class="form-label"><b>Password</b></label>
+                            <input type="password" class="form-control" id="newpassword"
+                                   name="newpassword">
                         </div>
-                        <div class="custom-select" style="text-align: center;" multiple>
-                            <label for="Role" class="form-label">Role</label>
-                            <select id="Role" class="form-control" name="newroles">
-                                <!--                                <option th:each="myRole : ${roles}" th:value="${myRole.getFirstName()}" th:text="${myRole.getFirstName()}" >USER</option>-->
-                                <option value="ROLE_USER">USER</option>
-                                <option value="ROLE_ADMIN">ADMIN</option>
-                            </select>
-                        </div>
+
+
+                    <div class="custom-select" style="text-align: center;" multiple>
+                        <label for="forNewUserRole" class="form-label">Role</label>
+                        <select id="forNewUserRole" class="form-control" name="newroles">
+
+                        </select>
+                    </div>
 
                         <div class="mb-3" style="text-align: center;" >
                             <br/>
-                            <button type="submit" class="btn btn-success btn-lg" value="Create!">Add new user</button>
+                            <button type="submit" class="btn btn-success btn-lg" id="createButton">Add new user</button>
                         </div>
-                    </form>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!--<form th:method="POST" th:action="@{/admin}" th:object="${newUser}">-->
-<!--  -->
-<!--  <label for="firstName">Enter firstName: </label>-->
-<!--  <input type="text" th:field="*{firstName}" id="firstName"/>-->
-<!--  <br/>-->
-<!--  <label for="password">Enter password: </label>-->
-<!--  <input type="text" th:field="*{password}" id="password">-->
-<!--  <br/>-->
-<!--  -->
 
-<!--  <br/>-->
-<!--  <input type="submit" value="Create!"/>-->
-<!--</form>-->
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -145,6 +133,6 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 
-
+<script type="text/javascript" src="/forNew.js"></script>
 </body>
 </html>

@@ -20,8 +20,9 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
 
-      <span class="navbar-text">
-        <b th:text="${user.getFirstName()}">VALUE</b> with roles: <i th:text="${user.getRoles().toString()}">VALUE</i>
+      <span class="navbar-text" >
+<!--          <li class="nav-item" id="userNameNavBar"></li>-->
+        <b id="userNameNavBar" ></b> with roles: <b id="userRoleNavBar"></b>
       </span>
         </ul>
         <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
@@ -70,15 +71,15 @@
                 <th scope="col">Role</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td th:utext="${user.getId()}">ID</td>
-                <td th:utext="${user.getFirstName()}">First name</td>
-                <td th:utext="${user.getSecondName()}">Last name</td>
-                <td th:utext="${user.getAge()}">Age</td>
-                <td th:utext="${user.getEmail()}">Email</td>
-                <td th:utext="${user.getRoles().toString()}">Role</td>
-            </tr>
+            <tbody id="tbodyUserTable">
+<!--            <tr>-->
+<!--                <td th:utext="${user.getId()}">ID</td>-->
+<!--                <td th:utext="${user.getFirstName()}">First name</td>-->
+<!--                <td th:utext="${user.getSecondName()}">Last name</td>-->
+<!--                <td th:utext="${user.getAge()}">Age</td>-->
+<!--                <td th:utext="${user.getEmail()}">Email</td>-->
+<!--                <td th:utext="${user.getRoles().toString()}">Role</td>-->
+<!--            </tr>-->
             </tbody>
         </table>
             </div>
@@ -102,7 +103,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-
+<script type="text/javascript" src="user.js"></script>
 
 </body>
 </html>

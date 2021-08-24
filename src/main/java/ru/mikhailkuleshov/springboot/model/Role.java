@@ -1,6 +1,7 @@
 package ru.mikhailkuleshov.springboot.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import org.springframework.data.annotation.Transient;
@@ -18,6 +19,7 @@ public class Role implements GrantedAuthority {
     private String name;
     @Transient
     @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
     private Set<User> users;
     public Role() {
     }
