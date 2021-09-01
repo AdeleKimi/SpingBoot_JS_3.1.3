@@ -21,10 +21,10 @@ async function getUser() {
 function navBar( user) {
     let role = user.roles
     let stringRole = ''
-    if (role[0].name === 'ROLE_ADMIN') {
-        stringRole = 'admin'
-    } else {
-        stringRole = 'user'
+
+
+    for (let name in role) {
+        stringRole += `${role[name].name}` + " "
     }
 
     $('#userNameNavBar').append(user.firstName)
@@ -33,6 +33,14 @@ function navBar( user) {
 }
 
 function userTable (user){
+    let role = user.roles
+    let stringRole = ''
+
+
+    for (let name in role) {
+        stringRole += `${role[name].name}` + " "
+    }
+
     $('#tbodyUserTable').append('<tr id="trUserTable"></tr>')
     $('#trUserTable').append('<td id="tdUserId"></td>')
     $('#trUserTable').append('<td id="tdUserFirstName"></td>')
@@ -45,7 +53,7 @@ function userTable (user){
     $('#tdUserSecondName').append(user.secondName)
     $('#tdUserAge').append(user.age)
     $('#tdUserEmail').append(user.email)
-    $('#tdUserRole').append(user.roles[0].name)
+    $('#tdUserRole').append(stringRole)
 }
 
 

@@ -2,6 +2,7 @@ package ru.mikhailkuleshov.springboot.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,8 +35,9 @@ public class AdminController {
     }
 
     @GetMapping()
-    public String allUsers(Principal principal, Model model) {
-        User user = (User) userService.loadUserByFirstName(principal.getName());
+    public String allUsers(Model model) {
+//        User user = (User) userService.loadUserByFirstName(principal.getName());
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("users", userService.allUsers());
         model.addAttribute("user",user);
         return "/AllUsers";
@@ -44,9 +46,9 @@ public class AdminController {
     @GetMapping("/new")
     public String newUser(@ModelAttribute("newUser") User user,
                           @ModelAttribute("role") Role role,
-                          Principal principal,
                           Model model) {
-        User myUser = (User) userService.loadUserByFirstName(principal.getName());
+//        User myUser = (User) userService.loadUserByFirstName(principal.getName());
+        User myUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("user",myUser);
         model.addAttribute("roles", userService.allRoles());
 

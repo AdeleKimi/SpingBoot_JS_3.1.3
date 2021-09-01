@@ -26,6 +26,7 @@ public class User implements UserDetails {
     private String secondName;
     private String password;
 
+
     @Fetch(FetchMode.JOIN)
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
@@ -131,6 +132,15 @@ public class User implements UserDetails {
                 getPassword() + "\n" +
                 allRole;
 
+    }
+
+    public String roleToString() {
+        StringBuilder  stringBuilder = new StringBuilder();
+        for (Role role :
+                getRoles()) {
+            stringBuilder.append(role.getName().replaceAll("ROLE_"," "));
+        }
+        return stringBuilder.toString();
     }
 }
 

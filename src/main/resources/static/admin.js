@@ -24,13 +24,21 @@ function allUserTable(users) {
     $('.myTbody').empty()
 
     $.each(users, function (i, user) {
+        let role = user.roles
+        let stringRole = ''
+
+
+        for (let name in role) {
+            stringRole += `${role[name].name}` + " "
+        }
+
         $('<tr>').append(
             $('<td>').text(user.id),
             $('<td>').text(user.firstName),
             $('<td>').text(user.secondName),
             $('<td>').text(user.age),
             $('<td>').text(user.email),
-            $('<td>').text(user.roles[0].name),
+            $('<td>').text(stringRole),
             $('<td>').append($('<button>').text("Edit").attr({
                 "type": "button",
                 "id": "buttonEdit",

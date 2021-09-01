@@ -19,7 +19,7 @@
         <ul class="navbar-nav mr-auto">
 
       <span class="navbar-text">
-        <b th:text="${user.getEmail()}">VALUE</b> with roles: <i th:text="${user.getRoles().toString()}">VALUE</i>
+        <b th:text="${user.getEmail()}">VALUE</b> with roles: <i th:text="${user.roleToString()}">VALUE</i>
       </span>
         </ul>
         <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
@@ -180,7 +180,7 @@
 
                                 <div class="custom-select" style="text-align: center;" multiple>
                                     <label for="Role" class="form-label">Role</label>
-                                    <select id="Role" class="form-control" name="newroles">
+                                    <select id="Role" class="form-control" name="newroles" multiple aria-label="multiple select example" >
 
                                     </select>
                                 </div>
