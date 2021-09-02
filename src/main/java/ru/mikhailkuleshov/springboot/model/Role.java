@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.Locale;
 import java.util.Set;
 
 @Entity
@@ -56,6 +57,11 @@ public class Role implements GrantedAuthority {
     public void setUsers(Set<User> users) {
         this.users = users;
     }
+
+    public String getShortName(){
+        return getName().replaceAll("ROLE_"," ");
+    }
+
 
     @Override
     public String getAuthority() {

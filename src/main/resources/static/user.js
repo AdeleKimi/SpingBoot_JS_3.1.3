@@ -38,7 +38,7 @@ function userTable (user){
 
 
     for (let name in role) {
-        stringRole += `${role[name].name}` + " "
+        stringRole += `${role[name].shortName}` + " "
     }
 
     $('#tbodyUserTable').append('<tr id="trUserTable"></tr>')

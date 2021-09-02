@@ -29,7 +29,7 @@ function allUserTable(users) {
 
 
         for (let name in role) {
-            stringRole += `${role[name].name}` + " "
+            stringRole += `${role[name].shortName}`
         }
 
         $('<tr>').append(
